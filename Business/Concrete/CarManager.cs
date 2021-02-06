@@ -18,12 +18,21 @@ namespace Business.Concrete
 
         public void Add(Car car)
         {
-            _carDal.Add(car);
+            if (car.DailyPrice > 0)
+            {
+                _carDal.Add(car);
+                Console.WriteLine("Arac Sisteme basariyla eklendi.");
+            }
+            else
+            {
+                Console.WriteLine("Lutfen aracin gunluk kirasini sifirdan buyuk bir deger giriniz.");
+            }
         }
 
         public void Delete(Car car)
         {
             _carDal.Delete(car);
+            Console.WriteLine("Araba sistemden basariyla silindi.");
         }
 
         public List<Car> GetAll()
@@ -31,15 +40,20 @@ namespace Business.Concrete
             return _carDal.GetAll();
         }
 
-        public List<Car> GetById(int CarId)
+        public Car GetById(int id)
         {
-            return _carDal.GetById(CarId);
+            return _carDal.Get(c => c.Id == id);
         }
 
         public void Update(Car car)
         {
             _carDal.Update(car);
+            Console.WriteLine("Araba sistemde basariyla guncellendi.");
+        }
 
+        List<Car> ICarService.GetById(int CarId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
