@@ -34,7 +34,7 @@ namespace Business.Concrete
 
         public Color GetById(int id)
         {
-            return _colorDal.Get();
+            return _colorDal.Get(c => c.ColorId == id);
         }
 
         public void Update(Color color)

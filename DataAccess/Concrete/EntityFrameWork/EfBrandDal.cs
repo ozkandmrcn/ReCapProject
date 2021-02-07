@@ -1,6 +1,8 @@
-﻿using DataAccess.Abstract;
+﻿using Core.DataAccess.EntityFrameWork;
+using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFrameWork;
 using Entities.Concrete;
+using Entities.DTOs;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,54 +12,36 @@ using System.Text;
 
 namespace DataAccess.Concrete
 {
-    public class EfBrandDal : IBrandDal
+    public class EfBrandDal : EfEntityRepositoryBase<Car, CarContext>, IBrandDal
     {
         public void Add(Brand entity)
         {
-            using (CarContext context = new CarContext())
-            {
-                var addedEntity = context.Entry(entity);
-                addedEntity.State = EntityState.Added;
-                context.SaveChanges();
-            }
+            throw new NotImplementedException();
         }
 
         public void Delete(Brand entity)
         {
-            using (CarContext context = new CarContext())
-            {
-                var addedEntity = context.Entry(entity);
-                addedEntity.State = EntityState.Deleted;
-                context.SaveChanges();
-            }
+            throw new NotImplementedException();
         }
 
         public Brand Get(Expression<Func<Brand, bool>> filter = null)
         {
-            using (CarContext context = new CarContext())
-            {
-                return context.Set<Brand>().SingleOrDefault(filter);
-            }
+            throw new NotImplementedException();
         }
 
         public List<Brand> GetAll(Expression<Func<Brand, bool>> filter = null)
         {
-            using (CarContext context = new CarContext())
-            {
-                return filter == null
-                    ? context.Set<Brand>().ToList()
-                    : context.Set<Brand>().Where(filter).ToList();
-            }
+            throw new NotImplementedException();
+        }
+
+        public List<CarDetailDto> GetCarDetailDtos()
+        {
+            throw new NotImplementedException();
         }
 
         public void Update(Brand entity)
         {
-            using (CarContext context = new CarContext())
-            {
-                var addedEntity = context.Entry(entity);
-                addedEntity.State = EntityState.Modified;
-                context.SaveChanges();
-            }
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,5 +1,7 @@
-﻿using DataAccess.Abstract;
+﻿using Core.DataAccess.EntityFrameWork;
+using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,53 +11,29 @@ using System.Text;
 
 namespace DataAccess.Concrete.EntityFrameWork
 {
-    public class EfCarDal : ICarDal
+    public class EfCarDal : EfEntityRepositoryBase<Car, CarContext>, ICarDal
     {
-        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
+      
+            public List<CarDetailDto> GetCarDetailDtos()
         {
             using (CarContext context = new CarContext())
             {
-                return filter == null
-                    ? context.Set<Car>().ToList()
-                    : context.Set<Car>().Where(filter).ToList();
-            }
-        }
-        public Car Get(Expression<Func<Car, bool>> filter = null)
-        {
-            using (CarContext context = new CarContext())
-            {
-                return context.Set<Car>().SingleOrDefault(filter);
-            }
-        }
-
-        public void Add(Car entity)
-        {
-            using (CarContext context = new CarContext())
-            {
-                var addedEntity = context.Entry(entity);
-                addedEntity.State = EntityState.Added;
-                context.SaveChanges();
+                var result = from p in context.Cars
+                            join c in context.Colors
+                            on p.ColorId equals c.ColorId
+                            join d in context.Brands
+                            on p.BrandId equals d.BrandId
+                            select new CarDetailDto
+                            {
+                                BrandName = d.BrandName,
+                                ColorName = c.ColorName,
+                                DailPrice = p.DailyPrice,
+                                
+                            };
+                return result.ToList();
             }
         }
 
-        public void Update(Car entity)
-        {
-            using (CarContext context = new CarContext())
-            {
-                var updateEntity = context.Entry(entity);
-                updateEntity.State = EntityState.Modified;
-                context.SaveChanges();
-            }
-        }
-
-        public void Delete(Car entity)
-        {
-            using (CarContext context = new CarContext())
-            {
-                var deletedEntity = context.Entry(entity);
-                deletedEntity.State = EntityState.Deleted;
-                context.SaveChanges();
-            }
-        }
+      
     }
 }
