@@ -17,272 +17,130 @@ namespace ConsoleUI
        // static int indexMainMenu = 0;
         static void Main(string[] args)
         {
-            
-            
-                        
 
-                        CarManager carManager = new CarManager(new EfCarDal());
-                        BrandManager brandManager = new BrandManager(new EfBrandDal());
-                        ColorManager colorManager = new ColorManager(new EfColorDal());
-            
-            foreach (var car in carManager.getCarDetail())
+
+            CarManager carManager = new CarManager(new EfCarDal());
+
+            //CarTest(carManager);
+
+            Console.WriteLine("***EF Database'de olan arabalar CarDetailsDto'ya göre gösterildi***");
+            //CarGetAll(carManager);
+            Console.WriteLine(carManager.GetAll().Message);
+
+            Console.WriteLine("\n***BrandId'a göre ve ColorId'ye göre getirme****");
+            Console.WriteLine("*color'a göre");
+            //CarGetByColorId(carManager);
+            Console.WriteLine(carManager.GetCarsByColorId(1).Message);
+            Console.WriteLine("*brand'a göre");
+            //CarGetByBrandId(carManager);
+            Console.WriteLine(carManager.GetCarsByBrandId(1).Message);
+
+            BrandManager brandManager = new BrandManager(new EfBrandDal());
+
+            //BrandAddTest(brandManager);
+
+            Console.WriteLine("\n***Marka Listesi***");
+            GetBrands(brandManager);
+            Console.WriteLine(brandManager.GetAll().Message);
+
+            ColorManager colorManager = new ColorManager(new EfColorDal());
+
+            //ColorAddTest(colorManager);
+
+            Console.WriteLine("\n***Renk Listesi***");
+            GetColors(colorManager);
+            Console.WriteLine(colorManager.GetAll().Message);
+
+            Console.WriteLine("\n***Kullanıcılar Oluşturuldu***");
+
+            UserManager userManager = new UserManager(new EfUserDal());
+            //UsersTest(userManager);
+            Console.WriteLine(userManager.GetAll().Message);
+
+            Console.WriteLine("\n***Müşteriler Oluşturuldu***");
+
+            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+            //CustomersTest(customerManager);
+            Console.WriteLine(customerManager.GetAll().Message);
+
+            Console.WriteLine("\n***Kiralama Oluşturuldu***");
+
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            RentalsTest(rentalManager);
+
+            foreach (var rental in rentalManager.GetAllRentalDetail().Data)
             {
-                Console.WriteLine(car.CarName + "-------" + car.BrandName +"------"+car.ColorName +"------"+car.DailPrice);
+                Console.WriteLine("rentalid:" + rental.RentalId + " - car description:" + rental.CarName + " - company name:" + rental.CustomerName + " - rentdate:" + rental.RentDate + " - returndate:" + rental.ReturnDate);
             }
 
 
-
-
-
-
-
-
-            /*
-                        Console.Clear();
-
-                        List<string> menuItems = new List<string>()
-                        {
-                            "Yeni Araç Kayıt",
-                            "Araç Silme İşlemi",
-                            "Tüm Araçları Listele",
-                            "Araç Bilgisi Güncelle",
-                            "Yeni Marka Girişi",
-                            "Marka Silme İşlemi",
-                            "Tüm Markaları Listele",
-                            "Model Yıllarına Göre Listele",
-                            "Fiyatına Göre Listele",
-                            "Çıkış"
-                        };
-
-                        Console.CursorVisible = false;
-                        while (true)
-                        {
-
-
-                            string selectedMenuItem = drawMainMenu(menuItems);
-                            if (selectedMenuItem == "Yeni Araç Kayıt")
-                            {
-                                AddCar(carManager);
-                            }
-                            else if (selectedMenuItem == "Araç Silme İşlemi")
-                            {
-                                DeleteCar(carManager, brandManager);
-                            }
-                            else if (selectedMenuItem == "Tüm Araçları Listele")
-                            {
-                                ListCars(carManager, brandManager);
-                            }
-                            else if (selectedMenuItem == "Araç Bilgisi Güncelle")
-                            {
-                                UpdateCar(carManager, brandManager);
-                            }
-                            else if (selectedMenuItem == "Yeni Marka Girişi")
-                            {
-                                AddBrand(brandManager);
-                            }
-                            else if (selectedMenuItem == "Marka Silme İşlemi")
-                            {
-                                DeleteBrand(brandManager);
-                            }
-                            else if (selectedMenuItem == "Tüm Markaları Listele")
-                            {
-                                ListBrands(brandManager);
-                            }
-                            else if (selectedMenuItem == "Model Yıllarına Göre Listele")
-                            {
-                                ListByModelYear(carManager, brandManager);
-                            }
-                            else if (selectedMenuItem == "Fiyatına Göre Listele")
-                            {
-                                ListByPrice(carManager, brandManager);
-                            }
-                            else if (selectedMenuItem == "Çıkış")
-                            {
-                                Environment.Exit(0);
-                            }
-
-                        }
-
-                    }
-                    public static string drawMainMenu(List<string> items)
-                    {
-                        CarDesign();
-                        for (int i = 0; i < items.Count; i++)
-                        {
-                            if (i == indexMainMenu)
-                            {
-                                Console.BackgroundColor = ConsoleColor.Gray;
-                                Console.ForegroundColor = ConsoleColor.Black;
-                                Console.WriteLine(items[i]);
-                            }
-                            else
-                            {
-                                Console.WriteLine(items[i]);
-                            }
-                            Console.ResetColor();
-                        }
-
-                        ConsoleKeyInfo ckey = Console.ReadKey();
-                        if (ckey.Key == ConsoleKey.DownArrow)
-                        {
-                            if (indexMainMenu == items.Count - 1) { }
-                            else { indexMainMenu++; }
-                        }
-                        else if (ckey.Key == ConsoleKey.UpArrow)
-                        {
-                            if (indexMainMenu <= 0) { }
-                            else { indexMainMenu--; }
-                        }
-                        else if (ckey.Key == ConsoleKey.LeftArrow)
-                        {
-                            Console.Clear();
-                        }
-                        else if (ckey.Key == ConsoleKey.RightArrow)
-                        {
-                            Console.Clear();
-                        }
-                        else if (ckey.Key == ConsoleKey.Enter)
-                        {
-                            return items[indexMainMenu];
-                        }
-                        else
-                        {
-                            return "";
-                        }
-
-                        Console.Clear();
-                        return "";
-                    }
-
-                    private static void CarDesign()
-                    {
-                        Console.WriteLine(@"          _________________          ");
-                        Console.WriteLine(@"       /                    \");
-                        Console.WriteLine(@"      / Araç Kiralama Sistemi\");
-                        Console.WriteLine(@"_____/                        \______");
-                        Console.WriteLine(@"|O O                             O O \");
-                        Console.WriteLine(@"|        ****            ****        |");
-                        Console.WriteLine(@"|_______* ** *__________* ** *_______/");
-                        Console.WriteLine(@"        * ** *          * ** *");
-                        Console.WriteLine(@"         ****            ****");
-                    }
-
-                    private static void AddCar(CarManager carManager)
-                    {
-                        //Araç Ekleme Fonksiyonu
-                        Console.WriteLine("Lütfen Yeni Araç Girişi İçin Aşağıda ki Bilgileri Sırası İle Eksiksiz Giriniz.");
-                        Console.Write("Araç Marka Id:");
-                        int BrandId = Convert.ToInt32(Console.ReadLine());
-                        Console.Write("Araç Renk Id:");
-                        int ColorId = Convert.ToInt32(Console.ReadLine());
-                        Console.Write("Araç Model Yılı:");
-                        int ModelYear = Convert.ToInt32(Console.ReadLine());
-                        Console.Write("Araç Günlük Kira Bedeli:");
-                        decimal DailyPrice = Convert.ToDecimal(Console.ReadLine());
-                        Console.Write("Araç Açıklaması:");
-                        string Description = Console.ReadLine();
-                        Console.Clear();
-                        carManager.Add(new Car { BrandId = BrandId, ColorId = ColorId, ModelYear = ModelYear, DailyPrice = DailyPrice, Description = Description });
-                    }
-
-                    private static void DeleteCar(CarManager carManager, BrandManager brandManager)
-                    {
-                        ListCars(carManager, brandManager);
-                        Console.Write("\nLütfen Sistemden Silinmesini İstediğiniz Aracın Id Numarasını Yukarıda Ki Listeden Seçerek Giriniz:");
-                        int id = Convert.ToInt32(Console.ReadLine());
-                        Console.Clear();
-                        carManager.Delete(new Car { Id = id });
-                    }
-                    private static void ListCars(CarManager carManager, BrandManager brandManager)
-                    {
-                        Console.Clear();
-                        foreach (var car in carManager.GetAll())
-                        {
-                            foreach (var brand in brandManager.GetAll().Where(p => p.BrandId == car.BrandId))
-                            {
-                                var table = new ConsoleTable("Araba Id", "Marka", "Günlük Ücret", "Açıklama");
-                                table.AddRow(car.Id, brand.BrandName, car.DailyPrice, car.Description);
-                                table.Write();
-                            }
-                        }
-                    }
-
-                    private static void UpdateCar(CarManager carManager, BrandManager brandManager)
-                    {
-
-                        ListCars(carManager, brandManager);
-                        Console.Write("\nLütfen Güncellenmesini İstediğiniz Aracın Id Numarasını Giriniz:");
-                        int id = Convert.ToInt32(Console.ReadLine());
-                        Console.Write("Araç Marka Id:");
-                        int BrandId = Convert.ToInt32(Console.ReadLine());
-                        Console.Write("Araç Renk Id:");
-                        int ColorId = Convert.ToInt32(Console.ReadLine());
-                        Console.Write("Araç Model Yılı:");
-                        int ModelYear = Convert.ToInt32(Console.ReadLine());
-                        Console.Write("Araç Günlük Kira Bedeli:");
-                        decimal DailyPrice = Convert.ToDecimal(Console.ReadLine());
-                        Console.Write("Araç Açıklaması:");
-                        string Description = Console.ReadLine();
-                        Console.Clear();
-                        carManager.Update(new Car { Id = id, BrandId = BrandId, ColorId = ColorId, ModelYear = ModelYear, DailyPrice = DailyPrice, Description = Description });
-                    }
-
-                    private static void AddBrand(BrandManager brandManager)
-                    {
-                        Console.Write("Lutfen Markanın Id Numarasini Giriniz:");
-                        int brandId = Convert.ToInt32(Console.ReadLine());
-                        Console.Write("Lutfen Markanın Adını Giriniz:");
-                        string brandName = Console.ReadLine();
-                        brandManager.Add(new Brand { BrandId = brandId, BrandName = brandName });
-                    }
-
-                    public static void DeleteBrand(BrandManager brandManager)
-                    {
-                        Console.Clear();
-                        foreach (var brand in brandManager.GetAll())
-                        {
-                            Console.WriteLine($"{brand.BrandId}. {brand.BrandName}");
-                        }
-                        Console.Write("Lütfen Sistemden Silmek Istediğiniz Markanın Id sini Giriniz:");
-                        int brandId = Convert.ToInt32(Console.ReadLine());
-                        brandManager.Delete(new Brand { BrandId = brandId });
-                    }
-
-                    public static void ListBrands(BrandManager brandManager)
-                    {
-                        Console.Clear();
-                        foreach (var brand in brandManager.GetAll())
-                        {
-                            Console.WriteLine($"{brand.BrandId}. {brand.BrandName}");
-                        }
-                    }
-
-                    public static void ListByModelYear(CarManager carManager, BrandManager brandManager)
-                    {
-                        foreach (var car in carManager.GetAll())
-                        {
-                            foreach (var brand in brandManager.GetAll().Where(p => p.BrandId == car.BrandId))
-                            {
-                                Console.WriteLine(" Marka:{0} Çıkış Yılı:{1} Fiyat:{2}\n", brand.BrandName, car.ModelYear, car.DailyPrice);
-                            }
-                        }
-                    }
-
-                    public static void ListByPrice(CarManager carManager, BrandManager brandManager)
-                    {
-                        foreach (var car in carManager.GetAll())
-                        {
-                            foreach (var brand in brandManager.GetAll().Where(p => p.BrandId == car.BrandId))
-                            {
-                                Console.WriteLine(" Marka:{0} Çıkış Yılı:{1} Fiyat:{2}\n", brand.BrandName, car.ModelYear, car.DailyPrice);
-                            }
-                        }
-                    }
-        */
-
-
-
         }
+
+        private static void RentalsTest(RentalManager rentalManager)
+        {
+            Rental rental1 = new Rental() { Id = 1, CarId = 2, CustomerId = 1, RentDate = DateTime.Now };
+            Rental rental2 = new Rental() { Id = 1, CarId = 2, CustomerId = 1, RentDate = DateTime.Now };
+            Rental rental3 = new Rental() { Id = 2, CarId = 3, CustomerId = 1, RentDate = DateTime.Now };
+            Rental rental4 = new Rental() { Id = 3, CarId = 3, CustomerId = 1, RentDate = DateTime.Now, ReturnDate = DateTime.Today };
+            Rental rental5 = new Rental() { Id = 4, CarId = 6, CustomerId = 2, RentDate = DateTime.Now };
+            rentalManager.Add(rental5);
+        }
+
+        private static void CustomersTest(CustomerManager customerManager)
+        {
+            Customer customer1 = new Customer() { CustomerId = 1, UserId = 1, CompanyName = "volkan şirketi" };
+            Customer customer2 = new Customer() { CustomerId = 2, UserId = 2, CompanyName = "ali şirketi" };
+            customerManager.Add(customer2);
+        }
+
+        private static void UsersTest(UserManager userManager)
+        {
+            User user1 = new User() { UserId = 1,FirstName = "volkan", LastName = "karaali", Email = "mail@mail.com", Password = "v123" };
+            User user2 = new User() { UserId = 2, FirstName = "ali" ,LastName = "veli", Email = "mail1@mail.com", Password = "1234" };
+            userManager.Add(user2);
+        }
+
+        private static void GetColors(ColorManager colorManager)
+        {
+            foreach (var color in colorManager.GetAll().Data)
+            {
+                Console.WriteLine(color.ColorName);
+            }
+        }
+
+        private static void GetBrands(BrandManager brandManager)
+        {
+            foreach (var brand in brandManager.GetAll().Data)
+            {
+                Console.WriteLine(brand.BrandName);
+            }
+        }
+
+        private static void CarGetAll(CarManager carManager)
+        {
+            foreach (var car in carManager.GetCarDetailDto().Data)
+            {
+
+                Console.WriteLine("id={0} - {1} marka, {2} renk, aciklama: {3}", car.CarId, car.BrandName, car.ColorName, car.DailPrice);
+            }
+        }
+
+        private static void CarGetByBrandId(CarManager carManager)
+        {
+            foreach (var car in carManager.GetCarsByBrandId(1).Data)
+            {
+                Console.WriteLine("Brand {0} olan araba verisinin fiyati: {1} ve aciklama: {2}", car.BrandId, car.DailyPrice, car.Description);
+            }
+        }
+
+        private static void CarGetByColorId(CarManager carManager)
+        {
+            foreach (var car in carManager.GetCarsByColorId(1).Data)
+            {
+                Console.WriteLine("Color {0} olan araba verisinin fiyati: {1} ve aciklama: {2}", car.ColorId, car.DailyPrice, car.Description);
+            }
+        }
+
     }
 }
 

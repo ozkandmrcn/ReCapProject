@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Result;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
@@ -15,32 +17,61 @@ namespace Business.Concrete
         {
             _colorDal = colorDal;
         }
-        public void Add(Color color)
+        public IResult Add(Color color)
         {
             _colorDal.Add(color);
-            Console.WriteLine("Renk sisteme basariyla eklendi.");
+            return new SuccessResult(Messages.ColorAdded);
         }
 
-        public void Delete(Color color)
+        public IResult Delete(Color color)
         {
             _colorDal.Delete(color);
-            Console.WriteLine("Renk sistemden basariyla silindi.");
+            return new SuccessResult(Messages.ColorDeleted);
         }
 
-        public List<Color> GetAll()
+        public IDataResult<List<Color>> GetAll()
         {
-            return _colorDal.GetAll();
+            if (DateTime.Now.Hour == 22)
+            {
+                return new ErrorDataResult<List<Color>>(Messages.MaintenanceTime);
+            }
+            return new SuccessDataResult<List<Color>>(_colorDal.GetAll());
         }
 
-        public Color GetById(int id)
+        public IDataResult <Color> GetById(int id)
         {
-            return _colorDal.Get(c => c.ColorId == id);
+            return new SuccessDataResult<Color>(_colorDal.Get(c => c.ColorId == id));
         }
 
-        public void Update(Color color)
+        public IResult Update(Color color)
         {
             _colorDal.Update(color);
-            Console.WriteLine("Renk sistemde basariyla guncellendi.");
+            return new SuccessResult(Messages.ColorUpdated);
+        }
+
+        IResult IColorService.Add(Color color)
+        {
+            throw new NotImplementedException();
+        }
+
+        IResult IColorService.Delete(Color color)
+        {
+            throw new NotImplementedException();
+        }
+
+        IDataResult<List<Color>> IColorService.GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        IDataResult<Color> IColorService.GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        IResult IColorService.Update(Color color)
+        {
+            throw new NotImplementedException();
         }
     }
 }
