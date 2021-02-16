@@ -38,10 +38,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Brand>>(_brandDal.GetAll());
         }
 
-        public List<Brand> GetBrands()
-        {
-            return _brandDal.GetAll();
-        }
+       
 
         public IDataResult<Brand> GetById(int id)
         {
@@ -58,9 +55,6 @@ namespace Business.Concrete
             return new ErrorResult(Messages.BrandNameInvalid);
         }
 
-        IResult IBrandService.Update(Brand brand)
-        {
-            throw new NotImplementedException();
-        }
+      
     }
 }

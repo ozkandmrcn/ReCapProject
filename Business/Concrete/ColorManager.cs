@@ -49,29 +49,8 @@ namespace Business.Concrete
             return new SuccessResult(Messages.ColorUpdated);
         }
 
-        IResult IColorService.Add(Color color)
-        {
-            throw new NotImplementedException();
-        }
+       
 
-        IResult IColorService.Delete(Color color)
-        {
-            throw new NotImplementedException();
-        }
-
-        IDataResult<List<Color>> IColorService.GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        IDataResult<Color> IColorService.GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        IResult IColorService.Update(Color color)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
