@@ -30,5 +30,9 @@ namespace Business.Constants
         public static string FailedRentalAddOrUpdate = "Bu araba henüz teslim edilmediği için kiralayamazsınız.";
         public static string ReturnedRental = "Kiraladığınız araç teslim edildi.";
         public static string Undelivered = "Teslim edilmemis arac.";
+        public static string CarImageLimitExceeded = "Araba kiralayamaqzsınız";
+
+        public static string CarImagesAdded = "Eklendi";
+        public static string CarImageNotAdded = "Hata olustu";
     }
 }
